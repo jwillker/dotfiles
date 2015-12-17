@@ -9,3 +9,5 @@ cp -r autostart/ DIR_CONFIG
 cp -r awesome/ DIR_CONFIG
 #Set gtk-3.0
 cp -r gtk-3.0/ DIR_CONFIG
+#Set plank
+cp -r plank/ DIR_CONFIG
