@@ -11,3 +11,5 @@ cp -r awesome/ DIR_CONFIG
 cp -r gtk-3.0/ DIR_CONFIG
 #Set plank
 cp -r plank/ DIR_CONFIG
+#Set terminator
+cp -r terminator/ DIR_CONFIG
