@@ -2,7 +2,7 @@
 
 DIR_CONFIG = ~/.config/
 echo
-echo "INSTAL JOHN'S DOTFILES ...."
+echo "INSTALLING JOHN'S DOTFILES ...."
 #Set autostart
 cp -r autostart/ DIR_CONFIG
 #Set awesome
@@ -13,3 +13,8 @@ cp -r gtk-3.0/ DIR_CONFIG
 cp -r plank/ DIR_CONFIG
 #Set terminator
 cp -r terminator/ DIR_CONFIG
+
+
+#Final Set
+echo "Rebooting your system in 5 secs.."
+sudo reboot
