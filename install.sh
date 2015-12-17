@@ -17,4 +17,4 @@ cp -r terminator/ DIR_CONFIG
 
 #Final Set
 echo "Rebooting your system in 5 secs.."
-sudo reboot
+sudo shutdown -r 5
