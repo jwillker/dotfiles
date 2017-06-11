@@ -118,7 +118,6 @@ NeoBundle "scrooloose/syntastic"
 
 
 "" HTML Bundle
-NeoBundle 'amirh/HTML-AutoCloseTag'
 NeoBundle 'hail2u/vim-css3-syntax'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tpope/vim-haml'
