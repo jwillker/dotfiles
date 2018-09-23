@@ -145,7 +145,6 @@ source $ZSH/oh-my-zsh.sh
 alias let_env=". /Users/jhonn/.local/share/virtualenvs/letrus-YpPxr5Yl/bin/activate"
 alias sobe-tudo="brew services start redis && brew services start elasticsearch && sudo mysql.server start"
 alias desce-tudo="brew services stop redis && brew services stop elasticsearch && sudo mysql.server stop"
-alias project="cd ~/code/letrus"
 alias dps="docker ps"
 alias emacs"/usr/local/bin/emacs"
 export PATH="/usr/bin:$PATH"
