@@ -1,0 +1,280 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/jhonn/.oh-my-zsh
+export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+
+#for openssl
+export LDFLAGS=-L/usr/local/opt/openssl/lib
+export CPPFLAGS=-I/usr/local/opt/openssl/include
+
+#For pipenv
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="powerlevel9k/powerlevel9k"
+POWERLEVEL9K_MODE='nerdfont-complete'
+
+DEFAULT_USER=$USER
+POWERLEVEL9K_DATE_FORMAT=%D{%d.%m.%y}
+
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+
+
+setopt autocd                   # Allow changing directories without `cd`
+setopt append_history           # Dont overwrite history
+setopt extended_history         # Also record time and duration of commands.
+setopt share_history            # Share history between multiple shells
+setopt hist_expire_dups_first   # Clear duplicates when trimming internal hist.
+setopt hist_find_no_dups        # Dont display duplicates during searches.
+setopt hist_ignore_dups         # Ignore consecutive duplicates.
+setopt hist_ignore_all_dups     # Remember only one unique copy of the command.
+setopt hist_reduce_blanks       # Remove superfluous blanks.
+setopt hist_save_no_dups        # Omit older commands in favor of newer ones.
+setopt hist_ignore_space        # Ignore commands that start with space.
+
+# Prompt Segments
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir dir_writable aws ssh virtualenv vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(command_execution_time status nodeenv docker_machine root_indicator ram background_jobs time date history battery)
+
+# Double line prompt
+POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+
+# Adding new line after prompt
+POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
+
+POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
+# Icons
+# POWERLEVEL9K_ANDROID_ICON:And
+# POWERLEVEL9K_APPLE_ICON: OSX
+# POWERLEVEL9K_AWS_EB_ICON: 🌱
+# POWERLEVEL9K_AWS_ICON: AWS:
+# POWERLEVEL9K_BACKGROUND_JOBS_ICON: ⚙
+# POWERLEVEL9K_BATTERY_ICON: 🔋
+# POWERLEVEL9K_CARRIAGE_RETURN_ICON: ↵
+# POWERLEVEL9K_DATE_ICON:
+# POWERLEVEL9K_DISK_ICON: hdd
+# POWERLEVEL9K_DROPBOX_ICON: Dropbox
+# POWERLEVEL9K_ETC_ICON: ⚙
+# POWERLEVEL9K_EXECUTION_TIME_ICON: Dur
+# POWERLEVEL9K_FAIL_ICON: ✘
+# POWERLEVEL9K_FOLDER_ICON:
+# POWERLEVEL9K_FREEBSD_ICON: BSD
+# POWERLEVEL9K_GO_ICON: Go
+# POWERLEVEL9K_HOME_ICON:
+# POWERLEVEL9K_HOME_SUB_ICON:
+# POWERLEVEL9K_JAVA_ICON: ☕
+# POWERLEVEL9K_KUBERNETES_ICON: ⎈
+# POWERLEVEL9K_LARAVEL_ICON:
+# POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR:
+# POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR: 
+# POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR: 
+# POWERLEVEL9K_LINUX_ALPINE_ICON: Alp
+# POWERLEVEL9K_LINUX_AOSC_ICON: Aos
+# POWERLEVEL9K_LINUX_ARCH_ICON: Arc
+# POWERLEVEL9K_LINUX_CENTOS_ICON: Cen
+# POWERLEVEL9K_LINUX_COREOS_ICON: Cor
+# POWERLEVEL9K_LINUX_DEBIAN_ICON: Deb
+# POWERLEVEL9K_LINUX_DEVUAN_ICON: Dev
+# POWERLEVEL9K_LINUX_ELEMENTARY_ICON: Elm
+# POWERLEVEL9K_LINUX_FEDORA_ICON: Fed
+# POWERLEVEL9K_LINUX_GENTOO_ICON: Gen
+# POWERLEVEL9K_LINUX_ICON: Lx
+# POWERLEVEL9K_LINUX_MAGEIA_ICON: Mag
+# POWERLEVEL9K_LINUX_MANJARO_ICON: Man
+# POWERLEVEL9K_LINUX_MINT_ICON: LMi
+# POWERLEVEL9K_LINUX_NIXOS_ICON: Nix
+# POWERLEVEL9K_LINUX_OPENSUSE_ICON: OSu
+# POWERLEVEL9K_LINUX_SABAYON_ICON: Sab
+# POWERLEVEL9K_LINUX_SLACKWARE_ICON: Sla
+# POWERLEVEL9K_LINUX_UBUNTU_ICON: Ubu
+# POWERLEVEL9K_LOAD_ICON: L
+# POWERLEVEL9K_LOCK_ICON: 
+# POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX: ╭─
+# POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX: ╰─
+# POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_PREFIX: ├─
+# POWERLEVEL9K_NETWORK_ICON: IP
+# POWERLEVEL9K_NODE_ICON: ⬢
+# POWERLEVEL9K_OK_ICON: ✔
+# POWERLEVEL9K_PUBLIC_IP_ICON:
+# POWERLEVEL9K_PYTHON_ICON:
+# POWERLEVEL9K_RAM_ICON: RAM
+# POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR: 
+# POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR: 
+# POWERLEVEL9K_ROOT_ICON: ⚡
+# POWERLEVEL9K_RUBY_ICON:
+# POWERLEVEL9K_RUST_ICON: Rust
+# POWERLEVEL9K_SERVER_ICON:
+# POWERLEVEL9K_SSH_ICON: (ssh)
+# POWERLEVEL9K_SUDO_ICON: 
+# POWERLEVEL9K_SUNOS_ICON: Sun
+# POWERLEVEL9K_SWAP_ICON: SWP
+# POWERLEVEL9K_SWIFT_ICON: Swift
+# POWERLEVEL9K_SYMFONY_ICON: SF
+# POWERLEVEL9K_TEST_ICON:
+# POWERLEVEL9K_TIME_ICON:
+# POWERLEVEL9K_TODO_ICON: ☑
+# POWERLEVEL9K_VCS_BOOKMARK_ICON: ☿
+# POWERLEVEL9K_VCS_BRANCH_ICON: 
+# POWERLEVEL9K_VCS_COMMIT_ICON:
+# POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON:
+# POWERLEVEL9K_VCS_GIT_GITHUB_ICON:
+# POWERLEVEL9K_VCS_GIT_GITLAB_ICON:
+# POWERLEVEL9K_VCS_GIT_ICON:
+# POWERLEVEL9K_VCS_HG_ICON:
+# POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON: ↓
+# POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON: ↑
+# POWERLEVEL9K_VCS_REMOTE_BRANCH_ICON: →
+# POWERLEVEL9K_VCS_STAGED_ICON: ✚
+# POWERLEVEL9K_VCS_STASH_ICON: ⍟
+# POWERLEVEL9K_VCS_SVN_ICON:
+# POWERLEVEL9K_VCS_TAG_ICON:
+# POWERLEVEL9K_VCS_UNSTAGED_ICON: ●
+# POWERLEVEL9K_VCS_UNTRACKED_ICON: ?
+# POWERLEVEL9K_VPN_ICON: (vpn)
+# POWERLEVEL9K_WINDOWS_ICON: WIN
+#SPACESHIP_PROMPT_ORDER=(
+ # time          # Time stampts section
+ # user          # Username section
+ # dir           # Current directory section
+ # host          # Hostname section
+ # git           # Git section (git_branch + git_status)
+ # hg            # Mercurial section (hg_branch  + hg_status)
+ # package       # Package version
+ # node          # Node.js section
+ # ruby          # Ruby section
+ # elixir        # Elixir section
+ # xcode         # Xcode section
+ # swift         # Swift section
+ # golang        # Go section
+ # php           # PHP section
+ # rust          # Rust section
+ # haskell       # Haskell Stack section
+ # julia         # Julia section
+ # docker        # Docker section
+ # aws           # Amazon Web Services section
+ # venv          # virtualenv section
+ # conda         # conda virtualenv section
+ # pyenv         # Pyenv section
+ # dotnet        # .NET section
+ # ember         # Ember.js section
+ # kubecontext   # Kubectl context section
+  #exec_time     # Execution time
+  #line_sep      # Line break
+  #battery       # Battery level and status
+ # vi_mode       # Vi-mode indicator
+#  jobs          # Background jobs indicator
+#  exit_code     # Exit code section
+          # Prompt character
+
+
+
+# Set list of themes to load
+# Setting this variable when ZSH_THEME=random
+# cause zsh load theme from this variable instead of
+# looking in ~/.oh-my-zsh/themes/
+# An empty array have no effect
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  osx
+  web-search
+  python
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+ )
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh""
+alias let_env=". /Users/jhonn/.local/share/virtualenvs/letrus-YpPxr5Yl/bin/activate"
+alias sobe-tudo="brew services start redis && brew services start elasticsearch && sudo mysql.server start"
+alias desce-tudo="brew services stop redis && brew services stop elasticsearch && sudo mysql.server stop"
+alias project="cd ~/code/letrus"
+alias dps="docker ps"
+alias emacs"/usr/local/bin/emacs"
+export PATH="/usr/bin:$PATH"
+#export PATH="/Library/Python/2.7/site-packages/pip-10.0.1-py2.7.egg:$PATH"
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH="/usr/local/mysql/bin:$PATH"
+export PATH="/usr/local/mysql/support-files:$PATH"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
