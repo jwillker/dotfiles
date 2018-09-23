@@ -2,7 +2,7 @@
 
 **My dotfiles**
 
-![dotfiles](https://github.com/JohnWillker/dotfiles/blob/master/pic.png)
+![dotfiles](pic.png)
 
 ##How to use:
 
