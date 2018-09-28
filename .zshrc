@@ -113,7 +113,8 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
