@@ -2,6 +2,9 @@
 [![Built with Spacemacs](https://cdn.rawgit.com/syl20bnr/spacemacs/442d025779da2f62fc86c2082703697714db6514/assets/spacemacs-badge.svg)](http://spacemacs.org)
 
 *There's 2 branches, one for Mac OS other for Arch Linux*
+ - master: Mac OS
+ - arch-awesome: Arch + AW
+ - future arch-i3: For Arch + i3
 
 Configs for:
 
