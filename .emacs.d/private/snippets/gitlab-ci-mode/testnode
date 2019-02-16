@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+#name : testnode
+#key : testnode
+#contributor : Jhonn
+# --
+test:
+  stage: test
+  image: node:8.15-jessie$1
+  script:
+    - npm run test$0

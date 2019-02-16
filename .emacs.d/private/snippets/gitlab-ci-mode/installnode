@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+#name : installnode
+#key : installnode
+#contributor : Jhonn
+# --
+install:
+  stage: install
+  image: node:8.15-jessie$1
+  script:
+    - npm install$0
+  artifacts:
+    paths:
+     - node_modules

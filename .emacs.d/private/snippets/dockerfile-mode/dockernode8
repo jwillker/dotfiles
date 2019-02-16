@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+#name : dockernode8
+#key : dockernode8
+#contributor : Jhonn
+# --
+FROM node:8.15-jessie$1
+
+COPY . /usr/src/
+WORKDIR /usr/src/
+$2
+CMD ["npm", "start$0"]
