@@ -29,6 +29,8 @@ values."
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layers
    '(
+     clojure
+     typescript
      sql
      rust
      go
@@ -72,13 +74,21 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(all-the-icons
+                                      doom-themes
+                                      spaceline-all-the-icons
                                       groovy-mode
                                       gitlab-ci-mode
-                                      gitlab-ci-mode-flycheck)
+                                      gitlab-ci-mode-flycheck
+                                      indent-guide
+                                      speed-type
+                                      ace-jump-mode
+                                      yasnippet-snippets)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   Dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(doom-Iosvkem
+                                    doom-Iosvkem-theme
+                                    doom-Iosvkem-theme-)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -146,7 +156,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark)
+   ;;dotspacemacs-themes '(doom-Iosvkem)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -191,10 +201,10 @@ values."
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
    ;; Name of the default layout (default "Default")
-   dotspacemacs-default-layout-name "Default"
+   dotspacemacs-default-layout-name "\uf302 Jhonn"
    ;; If non nil the default layout name is displayed in the mode-line.
    ;; (default nil)
-   dotspacemacs-display-default-layout nil
+   dotspacemacs-display-default-layout t
    ;; If non nil then the last auto saved layouts are resume automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
@@ -278,7 +288,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative t)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -320,10 +330,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-  (set-frame-parameter (selected-frame) 'alpha '(90 90))
+  (set-frame-parameter (selected-frame) 'alpha '(100 100))
   (add-to-list 'default-frame-alist '(alpha 90 90))
-  (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
-  (add-to-list 'auto-mode-alist '(".gitlab-ci.yml" . gitlab-ci-mode))
   ;; TODO - functions to increase & decrease frame alpha parameter
   (defun increase-alpha (n)
     (interactive)
@@ -340,6 +348,9 @@ before packages are loaded. If you are unsure, you should try in setting them in
                                      (increase-alpha 10)))
   (global-set-key (kbd "C-c C--") '(lambda () (interactive)
                                      (increase-alpha (- 10))))
+  (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+  (global-set-key (kbd "C-c g") 'helm-ag)
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -349,40 +360,102 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  )
+  ;; NeoTree theme to show icons
+  (setq neo-theme 'icons)
+  (setq ns-use-srgb-colorspace nil)
+  (setq powerline-default-separator 'utf-8)
+  ;;(setq powerline-image-apple-rgb t)
+  (setq ns-right-alternate-modifier nil)
+  (setq yas-snippet-dirs
+        '("~/.emacs.d/private/snippets"                 ;; personal snippets
+          ))
+  ;; Enable indent guide at startup
+  (spacemacs/toggle-indent-guide-globally-on)
+  (spacemacs/toggle-auto-completion-on)
+  (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+  (add-to-list 'auto-mode-alist '("\\.gitlab-ci.yml$" . gitlab-ci-mode))
+  ;; Not using because slow in yml filess
+  (use-package spaceline-all-the-icons
+    :after spaceline
+    :config
+    (spaceline-all-the-icons-theme)
+    (spaceline-all-the-icons--setup-anzu)
+    (spaceline-all-the-icons--setup-git-ahead)
+    (spaceline-toggle-all-the-icons-mode-icon-on)
+    (spaceline-toggle-all-the-icons-buffer-position-on))
 
+
+  (setq spaceline-all-the-icons-icon-set-modified 'circle)
+  (load-theme 'doom-Iosvkem t)
+  )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(setq neo-theme 'icons)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
- '(blink-cursor-mode nil)
- '(custom-enabled-themes (quote (seti)))
- '(custom-safe-themes
-   (quote
-    ("bd7b7c5df1174796deefce5debc2d976b264585d51852c962362be83932873d9" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" "6ac7c0f959f0d7853915012e78ff70150bfbe2a69a1b703c3ac4184f9ae3ae02" "15348febfa2266c4def59a08ef2846f6032c0797f001d7b9148f30ace0d08bcf" "c90fd1c669f260120d32ddd20168343f5c717ca69e95d2f805e42e88430c340e" "2d16f85f22f1841390dfc1234bd5acfcce202d9bb1512aa8eabd0068051ac8c3" "c3d4af771cbe0501d5a865656802788a9a0ff9cf10a7df704ec8b8ef69017c68" "b571f92c9bfaf4a28cb64ae4b4cdbda95241cd62cf07d942be44dc8f46c491f4" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" default)))
- '(display-line-numbers-type (quote relative))
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(company-quickhelp-color-background "#4F4F4F")
+ '(company-quickhelp-color-foreground "#DCDCCC")
+ '(compilation-message-face (quote default))
  '(evil-want-Y-yank-to-eol nil)
- '(global-display-line-numbers-mode t)
- '(hl-paren-background-colors (quote ("#2492db" "#95a5a6" nil)))
- '(hl-paren-colors (quote ("#ecf0f1" "#ecf0f1" "#c0392b")) t)
- '(line-number-mode nil)
+ '(fci-rule-color "#37474f" t)
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(hl-sexp-background-color "#1c1f26")
+ '(magit-diff-use-overlays nil)
+ '(nrepl-message-colors
+   (quote
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (vagrant-tramp vagrant gitlab-ci-mode-flycheck gitlab-ci-mode groovy-mode flymd xterm-color unfill shell-pop mwim multi-term go-guru go-eldoc flyspell-popup treepy graphql eshell-z eshell-prompt-extras esh-help company-go go-mode company-auctex auctex rainbow-mode rainbow-identifiers color-identifiers-mode vmd-mode adoc-mode markup-faces nginx-mode helm-ag-r toml-mode racer flycheck-rust cargo rust-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby all-the-icons memoize csv-mode git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter diff-hl flyspell-correct-helm flyspell-correct auto-dictionary flycheck-pos-tip pos-tip flycheck phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode powershell web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data dockerfile-mode docker tablist docker-tramp terraform-mode hcl-mode sql-indent org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download htmlize gnuplot zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme smeargle orgit magit-gitflow helm-gitignore helm-company helm-c-yasnippet gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link fuzzy evil-magit magit magit-popup git-commit ghub with-editor company-tern tern company-statistics company-anaconda company auto-yasnippet ac-ispell auto-complete mmm-mode markdown-toc markdown-mode gh-md yaml-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor yasnippet multiple-cursors js2-mode js-doc coffee-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
- '(sml/active-background-color "#34495e")
- '(sml/active-foreground-color "#ecf0f1")
- '(sml/inactive-background-color "#dfe4ea")
- '(sml/inactive-foreground-color "#34495e")
- '(tool-bar-mode nil))
+    (doom-Iosvkem-theme doom-dracula-theme doom-themes org-plus-contrib gruvbox-theme-theme ranger pipenv yasnippet-snippets clojure-snippets clj-refactor inflections edn paredit peg lv cider-eval-sexp-fu cider sesman queue clojure-mode tide typescript-mode all-the-icons-dired spaceline-all-the-icons ace-jump-mode kubernetes-evil speed-type company-quickhelp macrostep elisp-slime-nav auto-compile packed zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org terraform-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rebecca-theme rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode paradox orgit organic-green-theme org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gitlab-ci-mode-flycheck gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-popup flyspell-correct-helm flycheck-rust flycheck-pos-tip flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dumb-jump dracula-theme dockerfile-mode docker django-theme diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode chruby cherry-blossom-theme cargo busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(paradox-github-token t)
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#f36c60")
+     (40 . "#ff9800")
+     (60 . "#fff59d")
+     (80 . "#8bc34a")
+     (100 . "#81d4fa")
+     (120 . "#4dd0e1")
+     (140 . "#b39ddb")
+     (160 . "#f36c60")
+     (180 . "#ff9800")
+     (200 . "#fff59d")
+     (220 . "#8bc34a")
+     (240 . "#81d4fa")
+     (260 . "#4dd0e1")
+     (280 . "#b39ddb")
+     (300 . "#f36c60")
+     (320 . "#ff9800")
+     (340 . "#fff59d")
+     (360 . "#8bc34a"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
+ '(yas-indent-line (quote fixed)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "#151718" :foreground "#D4D7D6")))))
+ '(default ((t (:background "#1B1D1E" :foreground "#F8F8F2" :family "Hack Nerd Font" :foundry "nil" :slant normal :weight bold :height 130 :width normal)))))
