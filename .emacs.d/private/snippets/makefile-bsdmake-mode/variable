@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : variable
+#key : variable
+#contributor : Jhonn
+# --
+$(eval 1 := 2)$0

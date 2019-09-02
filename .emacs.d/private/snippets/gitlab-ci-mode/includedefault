@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : includedefault
+#key : includedefault
+#contributor : Jhonn
+# --
+include:
+  - project: 'COMUM/repo-default'
+    ref: $0
+    file: '.gitlab-ci.yml'

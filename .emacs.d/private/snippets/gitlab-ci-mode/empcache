@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : empcache
+#key : empcache
+#contributor : Jhonn
+# --
+cache: {}

@@ -1,0 +1,7 @@
+font-hack-nerd-font
+font-microsoft-office
+font-powerline-symbols
+font-source-code-pro
+google-cloud-sdk
+minikube
+wkhtmltopdf
