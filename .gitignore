@@ -89,12 +89,4 @@ sclack/
 startup.sh
 syncdotfiles.sh
 test.sh
-
-
-
-
-
-
-
-
-
+.emacs.d/private/snippets/README.md
