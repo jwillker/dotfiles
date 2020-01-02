@@ -90,8 +90,7 @@ values."
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(company
-                                    doom-Iosvkem
+   dotspacemacs-excluded-packages '(doom-Iosvkem
                                     doom-Iosvkem-theme
                                     doom-Iosvkem-theme-)
    ;; Defines the behaviour of Spacemacs when installing packages.
@@ -378,7 +377,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (add-hook 'makefile-bsdmake-mode-hook 'auto-complete-mode)
   (add-hook 'python-mode-hook 'auto-complete-mode)
   (add-hook 'sh-mode-hook 'auto-complete-mode)
-  (add-hook 'text-mode-hook 'auto-complete-mode)
   (add-hook 'clojure-mode-hook 'auto-complete-mode)
   )
 
