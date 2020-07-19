@@ -41,8 +41,8 @@ values."
          go-tab-width 4)
      nginx
      yaml
-     terraform
-     docker
+     (terraform :variables terraform-auto-format-on-save t)
+     (docker :variables docker-dockerfile-backend 'lsp)
      auto-completion
      better-defaults
      colors
@@ -51,9 +51,10 @@ values."
      javascript
      latex
      markdown
-     python
+     (python :variables python-backend 'lsp python-lsp-server 'mspyls)
      ruby
      shell
+     (shell-scripts :variables shell-scripts-backend 'lsp)
      spell-checking
      syntax-checking
      themes-megapack
@@ -404,17 +405,26 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-set-key (kbd "C-c C-k d d") 'kubernetes-display-deployment)
 
   (add-hook 'kubernetes-display-thing-mode 'yaml-mode)
-  (add-hook 'terraform-mode-hook 'auto-complete-mode)
+  ;;(add-hook 'terraform-mode-hook 'auto-complete-mode)
   (add-hook 'dockerfile-mode-hook 'auto-complete-mode)
   (add-hook 'elixir-mode-hook 'auto-complete-mode)
   (add-hook 'gitlab-ci-mode-hook 'auto-complete-mode)
   (add-hook 'go-mode-hook 'auto-complete-mode)
   (add-hook 'js-mode-hook 'auto-complete-mode)
   (add-hook 'makefile-bsdmake-mode-hook 'auto-complete-mode)
-  (add-hook 'python-mode-hook 'auto-complete-mode)
-  (add-hook 'sh-mode-hook 'auto-complete-mode)
+  ;;(add-hook 'python-mode-hook 'auto-complete-mode)
+  ;;(add-hook 'sh-mode-hook 'auto-complete-mode)
   (add-hook 'clojure-mode-hook 'auto-complete-mode)
 
+  ;;
+  (with-eval-after-load 'lsp-mode
+    (lsp-register-client
+     (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
+                      :major-modes '(terraform-mode)
+                      :server-id 'terraform-ls))
+
+    (add-hook 'terraform-mode-hook #'lsp)
+    )
 ;;  (require 'ob-python)
 ;;  (require 'ob-shell)
 ;;  (org-babel-do-load-languages
@@ -459,7 +469,9 @@ you should place your code here."
 
   (setq spaceline-all-the-icons-icon-set-modified 'circle)
 
-  (load-theme 'doom-Iosvkem t)
+  ;;(load-theme 'doom-Iosvkem t)
+  ;;favorites: kaolin-*
+  (load-theme 'spacegray t)
   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
