@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/jhonn/.oh-my-zsh
@@ -12,10 +12,52 @@ export CPPFLAGS=-I/usr/local/opt/openssl/include
 #For pipenv
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+#istioctl
+export PATH="$PATH:/Users/jhonn/bin/istio-1.0.3/bin"
+
+export PATH="$PATH:/Users/jhonn/bin"
+#pip libcloud
+#export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
+
+export BYOBU_PREFIX=/usr/local
+
+export PATH="/usr/bin:$PATH"
+export PATH=$PATH:$HOME/.linkerd2/bin
+#export PATH="/Library/Python/2.7/site-packages/pip-10.0.1-py2.7.egg:$PATH"
+export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH=$PATH:/Users/jhonn/go/bin
+export PATH="/usr/local/mysql/bin:$PATH"
+export PATH="/usr/local/mysql/support-files:$PATH"
+export PATH="/Applications/VirtualBox.app/Contents/MacOS:$PATH"
+
+#ansible winrm
+export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="/usr/local/opt/gettext/bin:$PATH"
+
+export EDITOR='nvim'
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+export GOPATH=/Users/$USER/go
+
+export PATH=$GOPATH/bin:$PATH
+
+export PATH=$PATH:$HOME/.istioctl/bin
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="spaceship"
+#ZSH_THEME="spaceship"
+ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_TMUX_AUTOSTART=true
 
 SPACESHIP_PROMPT_ORDER=(
   time          # Time stampts section
@@ -42,7 +84,7 @@ SPACESHIP_PROMPT_ORDER=(
   pyenv         # Pyenv section
   dotnet        # .NET section
   ember         # Ember.js section
-  kubecontext   # Kubectl context section
+  kubectl_context
   exec_time     # Execution time
   line_sep      # Line break
   battery       # Battery level and status
@@ -50,10 +92,10 @@ SPACESHIP_PROMPT_ORDER=(
   jobs          # Background jobs indicator
   exit_code     # Exit code section
   char          # Prompt character
+  terraform
 )
 SPACESHIP_TIME_SHOW=True
 SPACESHIP_BATTERY_THRESHOLD=90
-
 # Set list of themes to load
 # Setting this variable when ZSH_THEME=random
 # cause zsh load theme from this variable instead of
@@ -104,12 +146,22 @@ SPACESHIP_BATTERY_THRESHOLD=90
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+  tmux
   git
   osx
+  aws
   kubectl
   web-search
+  vagrant
+  pip
+  httpie
   zsh-autosuggestions
   zsh-syntax-highlighting
+  terraform
+  docker-compose
+  bazel
+  gcloud
+  httpie
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -144,21 +196,22 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh""
 alias let_env=". /Users/jhonn/.local/share/virtualenvs/letrus-YpPxr5Yl/bin/activate"
-alias sobe-tudo="brew services start redis && brew services start elasticsearch && sudo mysql.server start"
-alias desce-tudo="brew services stop redis && brew services stop elasticsearch && sudo mysql.server stop"
 alias dps="docker ps"
-alias emacs"/usr/local/bin/emacs"
-export PATH="/usr/bin:$PATH"
-#export PATH="/Library/Python/2.7/site-packages/pip-10.0.1-py2.7.egg:$PATH"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH=$PATH:/Users/jhonn/go/bin
-export GOPATH=~/go
-export PATH="/usr/local/mysql/bin:$PATH"
-export PATH="/usr/local/mysql/support-files:$PATH"
-export PATH="/Applications/VirtualBox.app/Contents/MacOS:$PATH"
+#alias emacs"/usr/local/bin/emacs"
+alias k="kubectl"
+alias vim="nvim"
+alias tldr="tldr -t ocean"
+alias tf="terraform"
+alias ls="exa"
+alias l="exa -lahF"
+alias fp="fzf --preview="bat {} --color=always""
+alias eks="/usr/local/bin/kubectl --kubeconfig /Volumes/Keybase/team/hashlab/secrets/eks-kubeconfig"
 
-#ansible winrm
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+eval "$(rbenv init -)"
+source ~/enhancd/init.sh
+
+[[ -s "/Users/jhonn/.gvm/scripts/gvm" ]] && source "/Users/jhonn/.gvm/scripts/gvm"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
