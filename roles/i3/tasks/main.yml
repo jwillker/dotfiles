@@ -1,0 +1,33 @@
+---
+- name: Install i3
+  pacman:
+    name:
+      - i3-gaps
+      - i3blocks
+      - i3lock
+      - i3status
+    state: present
+
+- name: Install i3 deps
+  pacman:
+    name:
+      - acpi
+      - compton
+      - feh
+      - playerctl
+      - xfce4-power-manager
+    state: present
+
+- name: Install py3status
+  pacman: name=py3status state=present
+
+- name: Verify that default applications file exists
+  file: path=/etc/xdg/mimeapps.list state=touch
+
+- name: Verify header in default applications file
+  lineinfile: dest=/etc/xdg/mimeapps.list
+              state=present
+              line='[Default Applications]'
+              insertbefore=BOF
+
+- include: rofi.yml

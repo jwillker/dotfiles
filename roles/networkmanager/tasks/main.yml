@@ -1,0 +1,38 @@
+---
+- name: Install NetworkManager and dependencies
+  pacman:
+    name:
+      - networkmanager
+      - networkmanager-openvpn
+      - network-manager-applet
+      - xfce4-notifyd
+      - gnome-keyring
+    state: present
+
+- name: Push NetworkManager openresolv config.
+  copy:
+      src: rc-manager.conf
+      dest: /etc/NetworkManager/conf.d/20-rc-manager.conf
+
+- name: Push connectivity check config
+  template:
+      src: connectivity.conf.j2
+      dest: /etc/NetworkManager/conf.d/20-connectivity.conf
+  when: network.conn_check is defined
+
+- name: Enable and start NetworkManager
+  service:
+      name: NetworkManager.service
+      enabled: yes
+      state: started
+
+- name: Enable and start NetworkManager dispatcher
+  service:
+      name: NetworkManager-dispatcher.service
+      enabled: yes
+      state: started
+
+- name: Disable dhcpcd service
+  service:
+      name: dhcpcd.service
+      enabled: no

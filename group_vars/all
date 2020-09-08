@@ -1,0 +1,78 @@
+user:
+    name: jhonn
+    uid: 1000
+    group: jhonn
+    shell: /usr/bin/zsh
+    email:  frazao.jhonn@gmail.com
+    log:
+        dir: log
+        rotate: 8
+
+hostname: main
+
+aur:
+    dir: aur
+    packages:
+        - yay
+
+base_packages:
+    - base-devel
+    - man-db
+    - man-pages
+    - pacman-contrib
+    - dmidecode
+    - tmux
+    - git
+    - rsync
+    - coreutils
+    - moreutils
+    - dateutils
+    - bc
+    - ranger
+    - pv
+    - jq
+    - screen
+    - fzf
+
+filesystem_packages:
+    - dosfstools
+    - ntfs-3g
+    - exfat-utils
+
+firejail:
+    blacklist:
+        - ~/.calendars
+        - ~/.contacts
+        - ~/.keys
+        - ~/library
+
+browser_choices:
+    - firewarden chromium
+    - firefox -P default
+    - firewarden -c qutebrowser
+
+base_fonts:
+    - adobe-source-code-pro-fonts
+    - cantarell-fonts
+    - gsfonts
+    - noto-fonts
+    - terminus-font
+    - tex-gyre-fonts
+    - ttf-caladea
+    - ttf-carlito
+    - ttf-dejavu
+    - ttf-droid
+    - ttf-fira-mono
+    - ttf-ibm-plex
+    - ttf-inconsolata
+    - ttf-liberation
+    - ttf-opensans
+    - ttf-ubuntu-font-family
+
+aur_fonts:
+    - ttf-cooper-hewitt
+    - ttf-courier-prime
+
+editors:
+    - vim
+    - emacs
