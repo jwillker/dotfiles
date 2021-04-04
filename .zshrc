@@ -188,16 +188,25 @@ eval "$(rbenv init -)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
-source /usr/share/nvm/init-nvm.sh
 #to run helm with arrays
 unsetopt nomatch
 
 #setxkbmap -option 'caps:ctrl_modifier' -layout us -variant altgr-intl && xcape -e 'Caps_Lock=Escape'
 
-# If is running in Linux then:
-if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+# If is running in Mac or Linux
+if [ "$(uname)" == "Darwin" ]; then
+    # Get list of gnubin directories
+    export GNUBINS="$(find /usr/local/opt -type d -follow -name gnubin -print)";
+
+    for bindir in ${GNUBINS[@]}; do
+        export PATH=$bindir:$PATH;
+    done;
+
+
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
+    source /usr/share/nvm/init-nvm.sh
     alias pbcopy="xclip -selection c"
     xdg-settings set default-web-browser chromium.desktop
     setxkbmap -option 'caps:ctrl_modifier' && xcape -e 'Caps_Lock=Escape'
