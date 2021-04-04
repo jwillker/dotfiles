@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  become: yes
+  roles:
+    - { role: base, tags: ['base'] }
+    - { role: firejail, tags: ['firejail'] }
+    - { role: browsers, tags: ['browsers'] }
+    - { role: filesystems, tags: ['filesystems'] }
+    - { role: fonts, tags: ['fonts'] }
+    - { role: x, tags: ['x'] }
+    - { role: lightdm, tags: ['lightdm'] }
+    - { role: i3, tags: ['i3'] }
+    - { role: nettools, tags: ['nettools'] }
+    - { role: openresolv, tags: ['openresolv'] }
+    - { role: networkmanager, tags: ['networkmanager'] }
+    - { role: editors, tags: ['editors'] }
+
+  vars_prompt:
+    - name: user_password
+      prompt: "Enter desired user password"

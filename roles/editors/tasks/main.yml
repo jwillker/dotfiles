@@ -1,0 +1,5 @@
+---
+- name: Install editors
+  pacman:
+    name: "{{ editors }}"
+    state: present

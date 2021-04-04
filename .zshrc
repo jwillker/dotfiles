@@ -2,56 +2,32 @@
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/jhonn/.oh-my-zsh
-export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/
+export ZSH="$HOME/.oh-my-zsh"
 
-#for openssl
-export LDFLAGS=-L/usr/local/opt/openssl/lib
-export CPPFLAGS=-I/usr/local/opt/openssl/include
 
-#For pipenv
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
-#istioctl
-export PATH="$PATH:/Users/jhonn/bin/istio-1.0.3/bin"
-
-export PATH="$PATH:/Users/jhonn/bin"
-#pip libcloud
-#export PYTHONPATH=/usr/local/lib/python2.7/site-packages/
-
-export BYOBU_PREFIX=/usr/local
-
 export PATH="/usr/bin:$PATH"
-export PATH=$PATH:$HOME/.linkerd2/bin
-#export PATH="/Library/Python/2.7/site-packages/pip-10.0.1-py2.7.egg:$PATH"
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
-export PATH=$PATH:/Users/jhonn/go/bin
-export PATH="/usr/local/mysql/bin:$PATH"
-export PATH="/usr/local/mysql/support-files:$PATH"
-export PATH="/Applications/VirtualBox.app/Contents/MacOS:$PATH"
 
-#ansible winrm
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-export PATH="/usr/local/opt/gettext/bin:$PATH"
-
-export EDITOR='nvim'
+export EDITOR='vim'
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
 
 # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 export PATH="$PATH:$HOME/.rvm/bin"
+
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
 
-export GOPATH=/Users/$USER/go
+export GOPATH=$HOME/go
 
 export PATH=$GOPATH/bin:$PATH
+export PATH="$HOME/.gem/ruby/2.7.0/bin:$PATH"
 
-export PATH=$PATH:$HOME/.istioctl/bin
+export PATH="$PATH:$HOME/.gvm/bin"
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -70,8 +46,6 @@ SPACESHIP_PROMPT_ORDER=(
   node          # Node.js section
   ruby          # Ruby section
   elixir        # Elixir section
-  xcode         # Xcode section
-  swift         # Swift section
   golang        # Go section
   php           # PHP section
   rust          # Rust section
@@ -148,7 +122,6 @@ SPACESHIP_BATTERY_THRESHOLD=90
 plugins=(
   tmux
   git
-  osx
   aws
   kubectl
   web-search
@@ -165,8 +138,6 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -195,23 +166,39 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh""
-alias let_env=". /Users/jhonn/.local/share/virtualenvs/letrus-YpPxr5Yl/bin/activate"
 alias dps="docker ps"
 #alias emacs"/usr/local/bin/emacs"
 alias k="kubectl"
-alias vim="nvim"
+alias kx="kubectx"
+#alias vim="nvim"
 alias tldr="tldr -t ocean"
 alias tf="terraform"
 alias ls="exa"
 alias l="exa -lahF"
 alias fp="fzf --preview="bat {} --color=always""
-alias eks="/usr/local/bin/kubectl --kubeconfig /Volumes/Keybase/team/hashlab/secrets/eks-kubeconfig"
+alias tfswitch="tfswitch -b ~/bin/terraform"
+alias yaml="bat -l yaml"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 eval "$(rbenv init -)"
-source ~/enhancd/init.sh
 
-[[ -s "/Users/jhonn/.gvm/scripts/gvm" ]] && source "/Users/jhonn/.gvm/scripts/gvm"
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
+source /usr/share/nvm/init-nvm.sh
+#to run helm with arrays
+unsetopt nomatch
+
+#setxkbmap -option 'caps:ctrl_modifier' -layout us -variant altgr-intl && xcape -e 'Caps_Lock=Escape'
+
+# If is running in Linux then:
+if [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    alias pbcopy="xclip -selection c"
+    xdg-settings set default-web-browser chromium.desktop
+    setxkbmap -option 'caps:ctrl_modifier' && xcape -e 'Caps_Lock=Escape'
+fi

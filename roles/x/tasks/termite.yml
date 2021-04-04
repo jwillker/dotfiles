@@ -1,0 +1,5 @@
+---
+- name: Install termite
+  pacman: name=termite state=present
+  tags:
+    - termite
