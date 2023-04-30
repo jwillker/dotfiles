@@ -28,23 +28,13 @@ values."
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layers
-   '(csv
+   '(
+     rust
+     csv
      systemd
-     clojure
      typescript
      sql
-     rust
-     (go :variables
-         go-backend 'lsp
-         go-format-before-save t
-         gofmt-command "goimports"
-         godoc-at-point-function 'godoc-gogetdoc
-         go-use-golangci-lint t
-         go-tab-width 4)
      nginx
-     yaml
-     (terraform :variables terraform-auto-format-on-save t)
-     (docker :variables docker-dockerfile-backend 'lsp)
      auto-completion
      better-defaults
      colors
@@ -52,17 +42,36 @@ values."
      html
      javascript
      latex
-     markdown
-     (python :variables python-backend 'lsp python-lsp-server 'mspyls)
-     ruby
      shell
-     (shell-scripts :variables shell-scripts-backend 'lsp)
      spell-checking
      syntax-checking
      themes-megapack
      neotree
      org
      git
+     version-control
+     (plantuml :variables
+               plantuml-jar-path "~/plantuml/plantuml.jar"
+               plantuml-default-exec-mode 'library)
+     (lua :variables
+          lua-backend 'lsp
+          lua-lsp-server 'lua-language-server
+          lsp-clients-lua-language-server-bin "/usr/bin/lua-language-server")
+     (go :variables
+         go-backend 'lsp
+         go-format-before-save t
+         gofmt-command "goimports"
+         godoc-at-point-function 'godoc-gogetdoc
+         go-use-golangci-lint t
+         go-tab-width 4)
+     (yaml :variables yaml-enable-lsp t)
+     (terraform :variables terraform-auto-format-on-save t)
+     (docker :variables docker-dockerfile-backend 'lsp)
+     ;; Use vmd (Github-flavored live preview)
+     (markdown :variables markdown-live-preview-engine 'vmd)
+     (python :variables python-backend 'lsp python-lsp-server 'pyright)
+     (ruby :variables ruby-backend nil)
+     (shell-scripts :variables shell-scripts-backend 'lsp)
      (lsp :variables
           lsp-enable-file-watchers t
           lsp-file-watch-threshold 20000
@@ -91,10 +100,9 @@ values."
           ;; never, on-demand, or always
           lsp-ui-peek-fontify 'on-demand
           lsp-lens-enable t)
-     version-control
-     vagrant
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup t
+                      auto-completion-use-company-box t
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t)
      ;; Use colorize for variables only
@@ -107,8 +115,6 @@ values."
      (spell-checking :variables spell-checking-enable-by-default nil)
      (spell-checking :variables spell-checking-enable-auto-dictionary t)
      (spell-checking :variables enable-flyspell-auto-completion t)
-     ;; Use vmd (Github-flavored live preview)
-     (markdown :variables markdown-live-preview-engine 'vmd)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -121,7 +127,6 @@ values."
                                       gitlab-ci-mode
                                       gitlab-ci-mode-flycheck
                                       indent-guide
-                                      speed-type
                                       ace-jump-mode
                                       kubernetes
                                       yasnippet-snippets
@@ -132,8 +137,11 @@ values."
                                       protobuf-mode
                                       rego-mode
                                       jsonnet-mode
-                                      kotlin-mode
-                                      go-projectile)
+                                      company-box
+                                      go-projectile
+                                      carbon-now-sh
+                                      sqlite3
+                                      lua-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -325,6 +333,7 @@ values."
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-theme '(all-the-icons)
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
@@ -386,7 +395,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (set-frame-parameter (selected-frame) 'alpha '(100 100))
   (add-to-list 'default-frame-alist '(alpha 100 100))
-  ;; TODO - functions to increase & decrease frame alpha parameter
   (defun increase-alpha (n)
     (interactive)
     (let* ((a (frame-parameter (selected-frame) 'alpha))
@@ -398,10 +406,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
       )
     )
 
+  ;; Frame
   (global-set-key (kbd "C-c C-=") '(lambda () (interactive)
                                      (increase-alpha 10)))
   (global-set-key (kbd "C-c C--") '(lambda () (interactive)
                                      (increase-alpha (- 10))))
+
+  ;; Utils
   (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
   (global-set-key (kbd "C-c g") 'helm-ag)
   (global-set-key (kbd "C-c l g") 'gitlab-ci-lint)
@@ -417,6 +428,19 @@ before packages are loaded. If you are unsure, you should try in setting them in
   (global-set-key (kbd "C-c C-k d s") 'kubernetes-display-service)
   (global-set-key (kbd "C-c C-k d d") 'kubernetes-display-deployment)
 
+  ;; Treemacs keybings
+  (global-set-key (kbd "C-c C-t t") 'treemacs)
+  (global-set-key (kbd "C-c C-t l") 'lsp-treemacs-symbols)
+  (global-set-key (kbd "C-c C-t e") 'lsp-treemacs-errors-list)
+  (global-set-key (kbd "C-c C-t i") 'lsp-treemacs-implementations)
+
+  ;; Plantuml keybing
+  (global-set-key (kbd "C-c C-d p") 'plantuml-preview)
+
+  ;; Code capture keybind
+  (global-set-key (kbd "C-c C-c n") 'carbon-now-sh)
+
+  ;; Hooks
   (add-hook 'kubernetes-display-thing-mode 'yaml-mode)
   ;;(add-hook 'terraform-mode-hook 'auto-complete-mode)
   (add-hook 'dockerfile-mode-hook 'auto-complete-mode)
@@ -429,7 +453,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;;(add-hook 'sh-mode-hook 'auto-complete-mode)
   (add-hook 'clojure-mode-hook 'auto-complete-mode)
 
-  ;;
   (with-eval-after-load 'lsp-mode
     (lsp-register-client
      (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
@@ -453,6 +476,10 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  ;; Gopls
+  (setq
+    lsp-go-env '((GOFLAGS . "-tags=unit,integration,e2e"))
+    )
   ;; NeoTree theme to show icons
   (setq neo-theme 'icons)
   (setq ns-use-srgb-colorspace nil)
@@ -468,7 +495,7 @@ you should place your code here."
   (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
   (add-to-list 'auto-mode-alist '("\\.gitlab-ci.yml$" . gitlab-ci-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl$" . yaml-mode))
-  ;; Not using because slow in yml filess
+
   (use-package spaceline-all-the-icons
     :after spaceline
     :config
@@ -481,15 +508,20 @@ you should place your code here."
     (spaceline-toggle-all-the-icons-mode-icon-on)
     (spaceline-toggle-all-the-icons-buffer-position-on))
 
-  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+  (setq spaceline-all-the-icons-icon-set-modified 'circle)
+  (setq spaceline-all-the-icons-separator-type 'none)
 
+  (use-package company-box
+    :custom (company-box-icons-alist 'company-box-icons-images))
+
+  (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;;  (use-package editorconfig
 ;;    :ensure nil
 ;;    :config
 ;;    (editorconfig-mode 0))
 
-  (setq spaceline-all-the-icons-icon-set-modified 'circle)
-  (setq spaceline-all-the-icons-separator-type 'none)
+
+  (require 'cl-lib)
 
   ;; Dependecies for go layer
   ;; go-projectile-install-tools for install it
@@ -515,8 +547,7 @@ you should place your code here."
           (errcheck      . "github.com/kisielk/errcheck")
           (gomvpkg       . "golang.org/x/tools/cmd/gomvpkg")))
 
-  ;;(load-theme 'doom-Iosvkem t)
-  ;;favorites: kaolin-ocean, kaolin-bubblegum subatomic, rebecca, spacegray spolky, material-light
+  ;;favorites: kaolin-ocean, kaolin-bubblegum subatomic, rebecca, spacegray spolky, material-light, doom-Iosvkem
   (load-theme 'material-light t)
   )
 ;; Do not write anything past this comment. This is where Emacs will
@@ -633,7 +664,7 @@ This function is called at the very end of Spacemacs initialization."
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(package-selected-packages
-   '(go-scratch go-errcheck selectrum flymake-golangci kotlin-mode systemd reformatter protobuf-mode org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download insert-shebang htmlize gnuplot fish-mode company-shell rego-mode lsp-treemacs treemacs pfuture ht lsp-ui lsp-mode ob-http ob-go kubel-evil jsonnet-mode bazel-mode hcl-mode powerline pcre2el skewer-mode simple-httpd js2-mode parent-mode projectile request haml-mode gitlab-ci-mode yaml-mode gitignore-mode fringe-helper git-gutter+ git-gutter flyspell-correct pos-tip flycheck flx highlight magit transient git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree json-mode tablist magit-popup docker-tramp json-snatcher json-reformat autothemer web-completion-data dash-functional tern go-mode company hydra multiple-cursors spinner pkg-info parseedn parseclj a epl rust-mode inf-ruby bind-map bind-key yasnippet auctex anaconda-mode pythonic f dash s memoize helm avy helm-core async auto-complete popup pdf-tools kubernetes scala-mode magit-gh-pulls doom-Iosvkem-theme doom-dracula-theme doom-themes org-plus-contrib gruvbox-theme-theme ranger pipenv yasnippet-snippets clojure-snippets clj-refactor inflections edn paredit peg lv cider-eval-sexp-fu cider sesman queue clojure-mode tide typescript-mode all-the-icons-dired spaceline-all-the-icons ace-jump-mode kubernetes-evil speed-type company-quickhelp macrostep elisp-slime-nav auto-compile packed zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org terraform-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rebecca-theme rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode paradox orgit organic-green-theme org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gitlab-ci-mode-flycheck gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-popup flyspell-correct-helm flycheck-rust flycheck-pos-tip flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dumb-jump dracula-theme dockerfile-mode docker django-theme diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode chruby cherry-blossom-theme cargo busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))
+   '(sqlite3 counsel-gtags counsel swiper ivy ggtags ron-mode reformatter protobuf-mode org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download insert-shebang htmlize gnuplot fish-mode company-shell rego-mode lsp-treemacs treemacs pfuture ht lsp-ui lsp-mode ob-http ob-go kubel-evil jsonnet-mode bazel-mode hcl-mode powerline pcre2el skewer-mode simple-httpd js2-mode parent-mode projectile request haml-mode gitlab-ci-mode yaml-mode gitignore-mode fringe-helper git-gutter+ git-gutter flyspell-correct pos-tip flycheck flx highlight magit transient git-commit with-editor smartparens iedit anzu evil goto-chg undo-tree json-mode tablist magit-popup docker-tramp json-snatcher json-reformat autothemer web-completion-data dash-functional tern go-mode company hydra multiple-cursors spinner pkg-info parseedn parseclj a epl rust-mode inf-ruby bind-map bind-key yasnippet auctex anaconda-mode pythonic f dash s memoize helm avy helm-core async auto-complete popup pdf-tools kubernetes scala-mode magit-gh-pulls doom-Iosvkem-theme doom-dracula-theme doom-themes org-plus-contrib gruvbox-theme-theme ranger pipenv yasnippet-snippets clojure-snippets clj-refactor inflections edn paredit peg lv cider-eval-sexp-fu cider sesman queue clojure-mode tide typescript-mode all-the-icons-dired spaceline-all-the-icons ace-jump-mode kubernetes-evil speed-type company-quickhelp macrostep elisp-slime-nav auto-compile packed zenburn-theme zen-and-art-theme yapfify xterm-color ws-butler winum white-sand-theme which-key web-mode web-beautify volatile-highlights vmd-mode vi-tilde-fringe vagrant-tramp vagrant uuidgen use-package unfill underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme toml-mode toc-org terraform-mode tao-theme tangotango-theme tango-plus-theme tango-2-theme tagedit sunny-day-theme sublime-themes subatomic256-theme subatomic-theme sql-indent spaceline spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme smeargle slim-mode shell-pop seti-theme scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reverse-theme restart-emacs rebecca-theme rbenv rake rainbow-mode rainbow-identifiers rainbow-delimiters railscasts-theme racer pyvenv pytest pyenv-mode py-isort purple-haze-theme pug-mode professional-theme popwin planet-theme pip-requirements phoenix-dark-pink-theme phoenix-dark-mono-theme persp-mode paradox orgit organic-green-theme org-bullets open-junk-file omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme nginx-mode neotree naquadah-theme mwim mustang-theme multi-term move-text monokai-theme monochrome-theme molokai-theme moe-theme mmm-mode minitest minimal-theme material-theme markdown-toc majapahit-theme magit-gitflow madhat2r-theme lush-theme lorem-ipsum livid-mode live-py-mode linum-relative link-hint light-soap-theme js2-refactor js-doc jbeans-theme jazz-theme ir-black-theme inkpot-theme indent-guide hy-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation heroku-theme hemisu-theme helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag hc-zenburn-theme gruvbox-theme gruber-darker-theme groovy-mode grandshell-theme gotham-theme google-translate golden-ratio go-guru go-eldoc gitlab-ci-mode-flycheck gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md gandalf-theme fuzzy flyspell-popup flyspell-correct-helm flycheck-rust flycheck-pos-tip flx-ido flatui-theme flatland-theme fill-column-indicator farmhouse-theme fancy-battery eyebrowse expand-region exotica-theme exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu espresso-theme eshell-z eshell-prompt-extras esh-help emmet-mode dumb-jump dracula-theme dockerfile-mode docker django-theme diminish diff-hl define-word darktooth-theme darkokai-theme darkmine-theme darkburn-theme dakrone-theme cython-mode cyberpunk-theme company-web company-tern company-statistics company-go company-auctex company-anaconda column-enforce-mode color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized color-identifiers-mode coffee-mode clues-theme clean-aindent-mode chruby cherry-blossom-theme cargo busybee-theme bundler bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme auto-yasnippet auto-highlight-symbol auto-dictionary apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme all-the-icons alect-themes aggressive-indent afternoon-theme adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(pos-tip-background-color "#FFFACE")
@@ -659,6 +690,7 @@ This function is called at the very end of Spacemacs initialization."
      (340 . "#fff59d")
      (360 . "#8bc34a")))
  '(vc-annotate-very-old-color nil)
+ '(warning-suppress-log-types '((emacs)))
  '(weechat-color-list
    '(unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
  '(yas-indent-line 'fixed))
@@ -667,5 +699,6 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background nil)))))
+ '(default ((t (:background nil))))
+ '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
 )
