@@ -79,7 +79,6 @@ elasticsearch*
 env/
 go/
 init.scpt
-init.sh
 jmeter.log
 mysql.server
 nltk_data/
