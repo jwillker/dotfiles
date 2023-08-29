@@ -1,4 +1,5 @@
 bloomrpc
+emacs
 font-hack-nerd-font
 font-microsoft-office
 font-powerline-symbols
