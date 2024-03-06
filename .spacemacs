@@ -29,30 +29,21 @@ values."
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layers
    '(
-     rust
-     csv
-     systemd
+     ;; +emacs
+     ibuffer
+     ;; +languages
+     (c-c++ :variables
+            c-c++-backend 'lsp-clangd
+            c-c++-dap-adapters '(dap-lldb dap-cpptools)
+            c-c++-enable-clang-format-on-save t
+            c-c++-adopt-subprojects t)
+     protobuf
      typescript
+     rust
      sql
-     nginx
-     auto-completion
-     better-defaults
-     colors
-     helm
      html
      javascript
-     latex
-     shell
-     spell-checking
-     syntax-checking
-     themes-megapack
-     neotree
-     org
-     git
-     version-control
-     (plantuml :variables
-               plantuml-jar-path "~/plantuml/plantuml.jar"
-               plantuml-default-exec-mode 'library)
+     csv
      (lua :variables
           lua-backend 'lsp
           lua-lsp-server 'lua-language-server
@@ -73,7 +64,10 @@ values."
      (python :variables python-backend 'lsp python-lsp-server 'pyright)
      (ruby :variables ruby-backend nil)
      (shell-scripts :variables shell-scripts-backend 'lsp)
+     ;; +tools
      (lsp :variables
+          lsp-modeline-diagnostics-scope ':file
+          lsp-use-upstream-bindings t
           lsp-enable-file-watchers t
           lsp-file-watch-threshold 20000
           ;; lsp-ui-doc
@@ -101,6 +95,24 @@ values."
           ;; never, on-demand, or always
           lsp-ui-peek-fontify 'on-demand
           lsp-lens-enable t)
+     systemd
+     nginx
+     auto-completion
+     better-defaults
+     colors
+     helm
+     latex
+     shell
+     spell-checking
+     syntax-checking
+     themes-megapack
+     neotree
+     org
+     git
+     version-control
+     (plantuml :variables
+               plantuml-jar-path "~/plantuml/plantuml.jar"
+               plantuml-default-exec-mode 'library)
      (auto-completion :variables
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-use-company-box t
@@ -126,13 +138,12 @@ values."
                                       doom-themes
                                       nano-theme
                                       spaceline-all-the-icons
-                                      groovy-mode
                                       gitlab-ci-mode
                                       gitlab-ci-mode-flycheck
                                       indent-guide
                                       ace-jump-mode
-                                      kubernetes
                                       yasnippet-snippets
+                                      groovy-mode
                                       lsp-mode
                                       lsp-ui
                                       lsp-treemacs
@@ -355,7 +366,7 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers '(:relative t)
+   dotspacemacs-line-numbers '(:relative nil)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -447,21 +458,28 @@ before packages are loaded. If you are unsure, you should try in setting them in
   ;; Plantuml keybing
   (global-set-key (kbd "C-c C-d p") 'plantuml-preview)
 
+
   ;; Code capture keybind
   (global-set-key (kbd "C-c C-c n") 'carbon-now-sh)
 
   ;; Hooks
+  ;; Go LSP
+  (add-hook 'go-mode-hook #'lsp-deferred)
+  (defun lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  ;;(add-hook 'go-mode-hook 'auto-complete-mode)
+  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
   (add-hook 'kubernetes-display-thing-mode 'yaml-mode)
   ;;(add-hook 'terraform-mode-hook 'auto-complete-mode)
   (add-hook 'dockerfile-mode-hook 'auto-complete-mode)
   (add-hook 'elixir-mode-hook 'auto-complete-mode)
   (add-hook 'gitlab-ci-mode-hook 'auto-complete-mode)
-  (add-hook 'go-mode-hook 'auto-complete-mode)
   (add-hook 'js-mode-hook 'auto-complete-mode)
   (add-hook 'makefile-bsdmake-mode-hook 'auto-complete-mode)
-  ;;(add-hook 'python-mode-hook 'auto-complete-mode)
-  ;;(add-hook 'sh-mode-hook 'auto-complete-mode)
-  (add-hook 'clojure-mode-hook 'auto-complete-mode)
+  (add-hook 'python-mode-hook 'auto-complete-mode)
+  (add-hook 'sh-mode-hook 'auto-complete-mode)
 
   (with-eval-after-load 'lsp-mode
     (lsp-register-client
@@ -557,8 +575,9 @@ you should place your code here."
           (errcheck      . "github.com/kisielk/errcheck")
           (gomvpkg       . "golang.org/x/tools/cmd/gomvpkg")))
 
+
   ;;favorites: kaolin-ocean, kaolin-bubblegum subatomic, rebecca, spacegray spolky, material-light, doom-Iosvkem, modus-operandi-deuteranopia, doom-nord-light
-  (load-theme 'modus-operandi-deuteranopia t)
+  (load-theme 'flatui t)
   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -636,7 +655,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+ ;; If there is more than one, they won't work right. 
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(company-quickhelp-color-background "#4F4F4F")
