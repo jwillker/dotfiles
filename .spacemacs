@@ -147,7 +147,7 @@ values."
                                       lsp-mode
                                       lsp-ui
                                       lsp-treemacs
-                                      bazel-mode
+                                      bazel
                                       protobuf-mode
                                       rego-mode
                                       jsonnet-mode
